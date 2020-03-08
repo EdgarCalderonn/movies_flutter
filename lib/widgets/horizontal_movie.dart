@@ -7,23 +7,36 @@ class MovieHorizontal extends StatelessWidget {
 
 
   List<Pelicula> peliculas;
+  final Function siguientePagina;
 
-  MovieHorizontal({@required this.peliculas});
+  MovieHorizontal({@required this.peliculas, @required this.siguientePagina});
 
+  PageController _pageController = new PageController(
+      initialPage: 1,
+      viewportFraction: 0.3
+  );
 
 
   @override
   Widget build(BuildContext context) {
+
+
+    _pageController.addListener((){
+      if( _pageController.position.pixels >= _pageController.position.maxScrollExtent - 200 )
+      {
+        // print("Cargar siguientes peliculas");
+        siguientePagina();
+      }
+    });
+
+
     return Container(
       height: Data.hs*0.3,
 
       child: PageView(
         reverse: false,
         pageSnapping: false,
-        controller: PageController(
-          initialPage: 1,
-          viewportFraction: 0.3
-        ),
+        controller: _pageController,
         children: _tarjetas()
         ,
 

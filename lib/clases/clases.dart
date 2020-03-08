@@ -21,11 +21,11 @@ class Data
 
 
   // Stream
-  static final _popularesStream = new StreamController<List<Pelicula>>.broadcast();
+  static final _popularesStreamController = new StreamController<List<Pelicula>>.broadcast();
 
   static void disposeStreams()
   {
-    _popularesStream?.close();
+    _popularesStreamController?.close();
   }
   
 
@@ -236,6 +236,8 @@ class Peliculas {
   }
 
 }
+
+
 
 
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:peliculas/clases/clases.dart';
+import 'package:peliculas/clases/peliculas_provider.dart';
 
 import 'package:peliculas/widgets/card_swiper.dart';
 import 'package:peliculas/widgets/horizontal_movie.dart';
@@ -12,10 +13,16 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+
+  final PeliculasProvider peliculasProvider = new PeliculasProvider();
+
+
   @override
   Widget build(BuildContext context) {
     Data.ws = MediaQuery.of(context).size.width;
     Data.hs = MediaQuery.of(context).size.height;
+
+    peliculasProvider.getPopulares();
 
     return SafeArea(
       child: Scaffold(
@@ -58,6 +65,8 @@ class _DashboardState extends State<Dashboard> {
                 
                 else
                   return Container(padding: EdgeInsets.only(top: 80),child: Center(child: CircularProgressIndicator()));
+
+                return Container();
               },
             ),
 
@@ -92,8 +101,8 @@ class _DashboardState extends State<Dashboard> {
               )
             ),
 
-          FutureBuilder(
-            future: Data.get_peliculas_populares(),
+          StreamBuilder(
+            stream: peliculasProvider.popularesStream,
             builder: (BuildContext context, snapshot)
             
             {
@@ -101,7 +110,11 @@ class _DashboardState extends State<Dashboard> {
 
               if(snapshot.hasData)
               {
-                return MovieHorizontal(peliculas:snapshot.data);
+                //print("tamaño: ${snapshot.data.length}");
+                return MovieHorizontal(
+                  peliculas: snapshot.data,
+                  siguientePagina: peliculasProvider.getPopulares,
+                );
               }
 
               else
