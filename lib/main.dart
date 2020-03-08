@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:peliculas/views/Dashboard.dart';
+import 'package:peliculas/views/pelicula_detalle.dart';
 
 
 
@@ -10,7 +11,11 @@ void main()
     MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Peliculas",
-      home: Dashboard() ,
+      routes:
+      {
+        "/" : (context) => Dashboard(),
+        "/peliculaDetalle" : (context) => PeliculaDetalle()
+      },
     )
   );  
 }
